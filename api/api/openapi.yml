@@ -1,0 +1,521 @@
+openapi: '3.0.2'
+info:
+  title: Birthday API
+  description: Birthday Project's API. Handles varius tasks like creating employees.
+  version: '1.0'
+  contact:
+    email: yigitsadic@gmail.com
+    name: Yigit Sadic
+    url: https://github.com/yigitsadic
+tags:
+  - name: Companies
+  - name: Employees
+  - name: Users
+  - name: Sessions
+servers:
+  - url: http://localhost:7755
+    description: Localhost
+  - url: https://todoproj.com
+    description: Production
+paths:
+  /heartbeat:
+    get:
+      description: Heartbeat endpoint.
+      responses:
+        '200':
+          description: OK
+          content:
+            'text/plain':
+              schema:
+                type: string
+                example: '.'
+  
+  /sessions/create:
+    post:
+      description: Creates new refresh and access token from credentials.
+      summary: Create access and refresh token
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Credentials valid and access granted.
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+        '422':
+          description: Unable to authenticate with given credentials.
+          content:
+            "application/json":
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    example: Invalid credentials.
+        '500':
+          $ref: "#/components/responses/500"
+  /sessions/refresh:
+    post:
+      summary: Refresh tokens.
+      description: Refreshes refresh token and access token.
+      tags:
+        - Sessions
+      security:
+        - RefreshToken: []
+      responses:
+        '201':
+          description: Refresh token valid, granted new refresh and access tokens.
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+        '401':
+          description: Unable to authenticate with given refresh token.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/UnauthenticatedResponse"
+        '500':
+          $ref: "#/components/responses/500"
+
+  /companies/{id}:
+    get:
+      summary: Company details
+      description: Returns company details.
+      tags:
+        - Companies
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/IDParam"
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Company"
+        '404':
+          $ref: '#/components/responses/404'
+        '401':
+          $ref: "#/components/responses/401"
+        '500':
+          $ref: "#/components/responses/500"
+    put:
+      summary: Update company
+      description: Update company information.
+      tags:
+        - Companies
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/IDParam"
+      requestBody:
+        description: Company update parameters.
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/CompanyDto'
+      responses:
+        '200':
+          description: Successfully updated company.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Company"
+        '401':
+          $ref: "#/components/responses/401"
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: "#/components/responses/500"
+
+  /users/{id}:
+    get:
+      summary: User Details
+      description: Returns users's details.
+      tags:
+        - Users
+      security:
+        - AccessToken: []
+      parameters:
+        - $ref: "#/components/parameters/IDParam"
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/User"
+        '404':
+          $ref: "#/components/responses/404"
+        '401':
+          $ref: "#/components/responses/401"
+        '500':
+          $ref: "#/components/responses/500"
+    put:
+      summary: Update user
+      description: Update user information.
+      tags:
+        - Users
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/IDParam"
+      requestBody:
+        description: User update parameters.
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        '200':
+          description: Successfully updated user.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/User"
+        '401':
+          $ref: "#/components/responses/401"
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: "#/components/responses/500"
+
+  /companies/{company_id}/employees:
+    get:
+      summary: List Employees
+      description: Employee list of the company
+      tags:
+        - Employees
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/CompanyIDParam"
+      responses:
+        '200':
+          description: Successfully updated user.
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Employee"
+        '404':
+          $ref: '#/components/responses/404'
+        '401':
+          $ref: "#/components/responses/401"
+        '500':
+          $ref: "#/components/responses/500"
+    post:
+      summary: Create an employee
+      description: Create an employee for the company.
+      tags:
+        - Employees
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/CompanyIDParam"
+      requestBody:
+        required: true
+        description: Employee parameters.
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/EmployeeDto'
+      responses:
+        '200':
+          description: Employee created successfully.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Employee"
+        '401':
+          $ref: "#/components/responses/401"
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: "#/components/responses/500"
+
+  /companies/{company_id}/employees/{id}:
+    get:
+      summary: Employee detail
+      description: Employee detail.
+      tags:
+        - Employees
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/CompanyIDParam"
+        - $ref: "#/components/parameters/IDParam"
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Employee"
+        '404':
+          $ref: '#/components/responses/404'
+        '401':
+          $ref: "#/components/responses/401"
+        '500':
+          $ref: "#/components/responses/500"
+    put:
+      summary: Update employee
+      description: Update employee with given parameters.
+      tags:
+        - Employees
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/CompanyIDParam"
+        - $ref: "#/components/parameters/IDParam"
+      requestBody:
+        description: Employee update parameters.
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/EmployeeDto'
+      responses:
+        '200':
+          description: Employee updated successfully.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Employee"
+        '401':
+          $ref: "#/components/responses/401"
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: "#/components/responses/500"
+    delete:
+      summary: Delete Employee
+      description: Delete given employee.
+      tags:
+        - Employees
+      security: 
+        - AccessToken: []
+      parameters: 
+        - $ref: "#/components/parameters/CompanyIDParam"
+        - $ref: "#/components/parameters/IDParam"
+      responses:
+        '200':
+          description: Employee deleted successfully.
+        '401':
+          $ref: "#/components/responses/401"
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: "#/components/responses/500"          
+
+components:
+  parameters:
+    IDParam:
+      name: id
+      in: path
+      description: ID
+      required: true
+      schema:
+        type: integer
+        example: 6
+    CompanyIDParam:
+      name: company_id
+      in: path
+      description: ID
+      required: true
+      schema:
+        type: integer
+        example: 13
+  securitySchemes:
+    AccessToken:
+      description: Standard token authentication with access tokens.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    RefreshToken:
+      description: Token authentication with refresh token.
+      type: apiKey
+      in: cookie
+      name: birthday-refresh-token
+  schemas:
+    Employee:
+      allOf:
+        - $ref: "#/components/schemas/EmployeeDto"
+        - required:
+            - id
+          properties:
+            id:
+              type: integer
+              description: ID
+              example: 62
+    EmployeeDto:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+        - birth_day
+        - birth_month
+      properties:
+        first_name:
+          type: string
+          description: First Name
+          example: Freddie
+        last_name:
+          type: string
+          description: Last Name
+          example: Mercury
+        email:
+          type: string
+          description: Email address of employee
+          example: freddie@google.com
+        birth_day:
+          type: number
+          description: Birth day of employee 1-31
+          example: 15
+        birth_month:
+          type: number
+          description: Birth month of employee 1-12
+          example: 4
+    UserDto:
+      type: object
+      required:
+        - first_name
+        - last_name
+      properties:
+        first_name:
+          type: string
+          description: First Name
+          example: John
+        last_name:
+          type: string
+          description: Last Name
+          example: Doe
+    User:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/UserDto"
+        - required:
+          - id
+          - email
+          properties:
+            id:
+              type: integer
+              description: ID
+              example: 47
+            email:
+              type: string
+              description: Email
+              example: john.doe@google.com
+    CompanyDto:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the company
+          example: Acme Inc.
+    Company:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CompanyDto"
+        - required:
+            - id
+          properties:
+            id:
+              type: integer
+              description: Unique ID of the company.
+              example: 35
+    ErrorMessage:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: Error occurred.
+    UnauthenticatedResponse:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Unable to authenticate. Given token is invalid/expired. Please create new refresh token via create-session.
+    AuthenticationResponse:
+      required:
+        - access_token
+        - refresh_token
+        - user_id
+        - company_id
+      properties:
+        access_token:
+          type: string
+          description: JWT
+        refresh_token:
+          type: string
+          description: JWT
+        user_id:
+          type: integer
+          description: User's ID
+        company_id:
+          type: integer
+          description: User's company ID
+  responses:
+    '500':
+      description: Internal server error
+      content:
+        "application/json":
+          schema:
+            $ref: "#/components/schemas/ErrorMessage"
+    '401':
+      description: Unauthenticated request.
+      content:
+        "application/json":
+          schema:
+            $ref: "#/components/schemas/ErrorMessage"
+    '404':
+      description: Resource not found.
+      content:
+        "application/json":
+          schema:
+            $ref: "#/components/schemas/ErrorMessage"
+    '422':
+      description: Validation error.
+      content:
+        "application/json":
+          schema:
+            $ref: "#/components/schemas/ErrorMessage"
