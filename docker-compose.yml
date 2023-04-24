@@ -1,7 +1,6 @@
 version: "3.8"
 services:
   database:
-    profiles: ["app"]
     image: postgres:15.2-alpine
     restart: always
     environment:
