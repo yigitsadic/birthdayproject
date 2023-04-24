@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  database:
+    profiles: ["app"]
+    image: postgres:15.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=birthdayproject
+      - POSTGRES_PASSWORD=birthdayproject
+    ports:
+      - "5435:5432"
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+      - ./dumps:/dumps
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-h", "localhost", "-p", "5432"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  db_volume:
+    driver: local
