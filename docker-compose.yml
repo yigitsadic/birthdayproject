@@ -16,6 +16,10 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    networks:
+      - backend
 volumes:
   db_volume:
     driver: local
+networks:
+  backend:
