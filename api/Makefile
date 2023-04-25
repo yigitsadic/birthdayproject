@@ -1,8 +1,10 @@
+include ../.env
+
 # Runs application.
 .PHONY: run
 run:
 	@echo "Running application..."
-	go run ./cmd/api
+	@POSTGRES_DSL=${POSTGRES_DSL} go run ./cmd/api
 
 # Run tests.
 .PHONY: test

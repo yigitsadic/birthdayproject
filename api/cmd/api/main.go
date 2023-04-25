@@ -21,7 +21,7 @@ import (
 )
 
 func main() {
-	connectionString := os.Getenv("DBCONNSTR")
+	connectionString := os.Getenv("POSTGRES_DSL")
 	if connectionString == "" {
 		connectionString = "postgres://birthdayproject:birthdayproject@localhost:5435/birthdayproject?sslmode=disable"
 	}
