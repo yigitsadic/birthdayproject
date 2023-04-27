@@ -5,6 +5,8 @@ import (
 	"errors"
 )
 
+var mockStoreErr = errors.New("error occurred")
+
 type MockEmployeeStore struct {
 	Store                 []*EmployeeModel
 	RaiseErrorOnOperation bool
@@ -30,31 +32,44 @@ func NewMockEmployeeStore() MockEmployeeStore {
 
 func (s MockEmployeeStore) FetchAll(ctx context.Context, companyId int) ([]*EmployeeModel, error) {
 	if s.RaiseErrorOnOperation {
-		return nil, errors.New("error occurred")
+		return nil, mockStoreErr
 	}
 
 	return s.Store, nil
 }
 
-func (s MockEmployeeStore) FindOne(ctx context.Context, companyId int, employeeId int) (*EmployeeModel, error) {
+func (s MockEmployeeStore) FindOne(
+	ctx context.Context,
+	companyId int,
+	employeeId int,
+) (*EmployeeModel, error) {
 	if s.RaiseErrorOnOperation {
-		return nil, errors.New("error occurred")
+		return nil, mockStoreErr
 	}
 
 	return s.Store[0], nil
 }
 
-func (s MockEmployeeStore) Create(ctx context.Context, companyId int, dto EmployeeDto) (*EmployeeModel, error) {
+func (s MockEmployeeStore) Create(
+	ctx context.Context,
+	companyId int,
+	dto EmployeeDto,
+) (*EmployeeModel, error) {
 	if s.RaiseErrorOnOperation {
-		return nil, errors.New("error occurred")
+		return nil, mockStoreErr
 	}
 
 	return s.Store[0], nil
 }
 
-func (s MockEmployeeStore) Update(ctx context.Context, companyId int, employeeId int, dto EmployeeDto) (*EmployeeModel, error) {
+func (s MockEmployeeStore) Update(
+	ctx context.Context,
+	companyId int,
+	employeeId int,
+	dto EmployeeDto,
+) (*EmployeeModel, error) {
 	if s.RaiseErrorOnOperation {
-		return nil, errors.New("error occurred")
+		return nil, mockStoreErr
 	}
 
 	return s.Store[0], nil
@@ -62,7 +77,7 @@ func (s MockEmployeeStore) Update(ctx context.Context, companyId int, employeeId
 
 func (s MockEmployeeStore) Delete(ctx context.Context, companyId int, employeeId int) error {
 	if s.RaiseErrorOnOperation {
-		return errors.New("error occurred")
+		return mockStoreErr
 	}
 
 	return nil
