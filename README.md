@@ -1,7 +1,6 @@
 # 🎁 Birthday Project
 
-This repository contains all services for birthday project to run. Structure is monorepo and this is the first readme file.
-
+Birhday project is a project for companies to send birthday emails to their employees on their birthdays automatically.
 
 ## Tech Stack
 
