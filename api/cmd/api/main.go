@@ -10,13 +10,13 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	_ "github.com/lib/pq"
-	"github.com/yigitsadic/birthday-app-api/cmd/api/server"
 	"github.com/yigitsadic/birthday-app-api/internal/auth"
 	"github.com/yigitsadic/birthday-app-api/internal/common"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_companies"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_employees"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_sessions"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_users"
+	"github.com/yigitsadic/birthday-app-api/internal/server"
 	"go.uber.org/zap"
 )
 

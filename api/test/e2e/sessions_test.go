@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/yigitsadic/birthday-app-api/cmd/api/server"
+	"github.com/yigitsadic/birthday-app-api/internal/server"
 )
 
 func (testSuite *IntegrationTestSuite) Test_Sessions_Create() {

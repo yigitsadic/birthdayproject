@@ -11,12 +11,12 @@ import (
 	"github.com/ory/dockertest"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"github.com/yigitsadic/birthday-app-api/cmd/api/server"
 	"github.com/yigitsadic/birthday-app-api/internal/auth"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_companies"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_employees"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_sessions"
 	"github.com/yigitsadic/birthday-app-api/internal/postgres_store/pg_users"
+	"github.com/yigitsadic/birthday-app-api/internal/server"
 	"github.com/yigitsadic/birthday-app-api/test/dbtestconfig"
 	"go.uber.org/zap"
 )
