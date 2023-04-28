@@ -1,5 +1,12 @@
 package sessions
 
+type SessionUser struct {
+	ID           int
+	Email        string
+	PasswordHash string
+	CompanyId    int
+}
+
 type AuthenticationModel struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
