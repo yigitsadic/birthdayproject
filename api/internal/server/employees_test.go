@@ -298,7 +298,7 @@ func Test_employeeDeleteHandler(t *testing.T) {
 		authReq := loginWithRequestLevel(t, ctxWithRoute, "1", "1")
 
 		s := Server{EmployeeRepository: mockEmployeeStore}
-		s.EmployeeDetailHandler(w, authReq)
+		s.EmployeeDeleteHandler(w, authReq)
 
 		res := w.Result()
 		defer res.Body.Close()
