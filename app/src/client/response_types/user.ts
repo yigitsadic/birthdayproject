@@ -1,4 +1,4 @@
-import { UserDto } from "../input_types/user_dto";
+import { UserDto } from "../dtos/user_dto";
 
 export interface User extends UserDto {
   id: number;
