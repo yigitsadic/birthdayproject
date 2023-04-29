@@ -16,13 +16,16 @@ export type RefreshTokenResponse =
 // from API.
 export async function refreshToken(): Promise<RefreshTokenResponse> {
   try {
-    const resp = await fetch("http://localhost:7755/sessions/refresh", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const resp = await fetch(
+      `${import.meta.env.VITE_API_URL}/sessions/refresh`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await resp.json();
 
     if (resp.status === 201) {

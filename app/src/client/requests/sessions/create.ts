@@ -18,14 +18,17 @@ export async function sessionCreate(
   dto: SessionDto
 ): Promise<SessionCreateResponse> {
   try {
-    const resp = await fetch("http://localhost:7755/sessions/create", {
-      method: "POST",
-      body: JSON.stringify(dto),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const resp = await fetch(
+      `${import.meta.env.VITE_API_URL}/sessions/create`,
+      {
+        method: "POST",
+        body: JSON.stringify(dto),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const body = await resp.json();
 
     if (resp.status === 201) {

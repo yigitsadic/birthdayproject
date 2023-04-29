@@ -19,7 +19,7 @@ export async function companyDetail(
 ): Promise<CompanyDetailResponse> {
   try {
     const resp = await fetch(
-      `http://localhost:7755/companies/${params.company_id}`,
+      `${import.meta.env.VITE_API_URL}/companies/${params.company_id}`,
       {
         headers: {
           "Content-Type": "application/json",

@@ -22,14 +22,17 @@ export async function updateUser(
   params: UpdateUserParams
 ): Promise<UpdateUserResponse> {
   try {
-    const resp = await fetch(`http://localhost:7755/users/${params.user_id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${params.accessToken}`,
-      },
-      body: JSON.stringify(params.dto),
-      method: "PUT",
-    });
+    const resp = await fetch(
+      `${import.meta.env.VITE_API_URL}/users/${params.user_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${params.accessToken}`,
+        },
+        body: JSON.stringify(params.dto),
+        method: "PUT",
+      }
+    );
 
     const data = await resp.json();
 

@@ -18,12 +18,15 @@ export async function getUserDetail(
   params: UserParams
 ): Promise<GetUserDetailResponse> {
   try {
-    const resp = await fetch(`http://localhost:7755/users/${params.user_id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${params.accessToken}`,
-      },
-    });
+    const resp = await fetch(
+      `${import.meta.env.VITE_API_URL}/users/${params.user_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${params.accessToken}`,
+        },
+      }
+    );
 
     const body = await resp.json();
 

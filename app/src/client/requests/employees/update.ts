@@ -14,7 +14,8 @@ export async function employeeUpdate(
 ): Promise<SingularEmployeeResponse> {
   try {
     const resp = await fetch(
-      `http://localhost:7755/companies/${params.company_id}/employees/${params.employee_id}`,
+      `${import.meta.env.VITE_API_URL}/companies/${params.company_id
+      }/employees/${params.employee_id}`,
       {
         method: "PUT",
         headers: {

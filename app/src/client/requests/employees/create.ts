@@ -14,7 +14,8 @@ export async function createEmployee(
 ): Promise<SingularEmployeeResponse> {
   try {
     const resp = await fetch(
-      `http://localhost:7755/companies/${params.company_id}/employees`,
+      `${import.meta.env.VITE_API_URL}/companies/${params.company_id
+      }/employees`,
       {
         method: "POST",
         headers: {
