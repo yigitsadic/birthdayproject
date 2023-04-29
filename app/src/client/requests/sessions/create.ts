@@ -21,6 +21,7 @@ export async function sessionCreate(
     const resp = await fetch("http://localhost:7755/sessions/create", {
       method: "POST",
       body: JSON.stringify(dto),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

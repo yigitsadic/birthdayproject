@@ -17,6 +17,8 @@ export type RefreshTokenResponse =
 export async function refreshToken(): Promise<RefreshTokenResponse> {
   try {
     const resp = await fetch("http://localhost:7755/sessions/refresh", {
+      method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
