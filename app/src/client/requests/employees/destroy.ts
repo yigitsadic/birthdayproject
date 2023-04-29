@@ -1,26 +1,25 @@
 import { UnknownError } from "../../defaults/unknown_error";
-import { Company } from "../../response_types/company";
 import { ErrorMessage } from "../../response_types/error_message";
-import { CompanyParams } from "./company_params";
+import { SharedEmployeeDetailParams } from "./types";
 
-export type CompanyDetailResponse =
+export type EmployeeDestroyResponse =
   | {
     kind: "SUCCESS";
-    data: Company;
   }
   | {
     kind: "FAILURE" | "UNAUTHENTICATED";
     data: ErrorMessage;
   };
 
-// companyDetail fetches company details with given access token and company id.
-export async function companyDetail(
-  params: CompanyParams
-): Promise<CompanyDetailResponse> {
+// destroyEmployee deletes given employee.
+export async function employeeDestroy(
+  params: SharedEmployeeDetailParams
+): Promise<EmployeeDestroyResponse> {
   try {
     const resp = await fetch(
-      `http://localhost:7755/companies/${params.company_id}`,
+      `http://localhost:7755/companies/${params.company_id}/employees/${params.employee_id}`,
       {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${params.accessToken}`,
@@ -33,7 +32,6 @@ export async function companyDetail(
     if (resp.status === 200) {
       return {
         kind: "SUCCESS",
-        data: data as Company,
       };
     }
 

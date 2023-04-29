@@ -1,26 +1,22 @@
 import { UnknownError } from "../../defaults/unknown_error";
-import { Company } from "../../response_types/company";
+import { EmployeeDto } from "../../dtos/employee_dto";
+import { Employee } from "../../response_types/Employee";
 import { ErrorMessage } from "../../response_types/error_message";
-import { CompanyParams } from "./company_params";
+import { SharedEmployeeDetailParams, SingularEmployeeResponse } from "./types";
 
-export type CompanyDetailResponse =
-  | {
-    kind: "SUCCESS";
-    data: Company;
-  }
-  | {
-    kind: "FAILURE" | "UNAUTHENTICATED";
-    data: ErrorMessage;
-  };
+export interface EmployeeUpdateParams extends SharedEmployeeDetailParams {
+  dto: EmployeeDto;
+}
 
-// companyDetail fetches company details with given access token and company id.
-export async function companyDetail(
-  params: CompanyParams
-): Promise<CompanyDetailResponse> {
+// employeeUpdate updates given employee with params.
+export async function employeeUpdate(
+  params: EmployeeUpdateParams
+): Promise<SingularEmployeeResponse> {
   try {
     const resp = await fetch(
-      `http://localhost:7755/companies/${params.company_id}`,
+      `http://localhost:7755/companies/${params.company_id}/employees/${params.employee_id}`,
       {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${params.accessToken}`,
@@ -33,7 +29,7 @@ export async function companyDetail(
     if (resp.status === 200) {
       return {
         kind: "SUCCESS",
-        data: data as Company,
+        data: data as Employee,
       };
     }
 
