@@ -4,10 +4,10 @@ import { refreshToken } from "./requests/sessions/refresh";
 // WrapRequestWithRefreshToken makes given request. When it gets unauthenticated response, retries with
 // refresh token.
 export async function WrapRequestWithRefreshToken<
-  T extends { kind: string },
-  K extends AuthenticationParams
->(func: Function, params: K): Promise<T> {
-  const result = (await func(params)) as T;
+  RReturnType extends { kind: string },
+  RParams extends AuthenticationParams
+>(func: Function, params: RParams): Promise<RReturnType> {
+  const result = (await func(params)) as RReturnType;
   if (result.kind === "SUCCESS" || result.kind === "FAILURE") {
     // If request resulted with success or failure (404 or 500) return with result.
 
@@ -20,7 +20,7 @@ export async function WrapRequestWithRefreshToken<
     if (refreshTokenResp.kind === "SUCCESS") {
       // Refresh token resulted with success. That means we can try to make request again.
       params.accessToken = refreshTokenResp.data.access_token;
-      const newResult = (await func(params)) as T;
+      const newResult = (await func(params)) as RReturnType;
 
       // If this request resulted with success or failure return that.
       if (newResult.kind === "SUCCESS" || newResult.kind === "FAILURE") {
