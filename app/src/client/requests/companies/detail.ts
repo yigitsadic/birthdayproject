@@ -7,6 +7,7 @@ export type CompanyDetailResponse =
   | {
     kind: "SUCCESS";
     data: Company;
+    type: "CompanyDetailResponse";
   }
   | {
     kind: "FAILURE" | "UNAUTHENTICATED";
@@ -34,6 +35,7 @@ export async function companyDetail(
       return {
         kind: "SUCCESS",
         data: data as Company,
+        type: "CompanyDetailResponse",
       };
     }
 

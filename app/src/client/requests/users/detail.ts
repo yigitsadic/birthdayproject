@@ -7,6 +7,7 @@ export type GetUserDetailResponse =
   | {
     kind: "SUCCESS";
     data: User;
+    type: "UserResponse";
   }
   | {
     kind: "FAILURE" | "UNAUTHENTICATED";
@@ -46,6 +47,7 @@ export async function getUserDetail(
 
     if (resp.status === 200) {
       return {
+        type: "UserResponse",
         kind: "SUCCESS",
         data: body as User,
       };
