@@ -4,6 +4,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { DashboardPage } from "./pages/dashboard.tsx";
 import { UserDetailPage } from "./pages/users/detail.tsx";
 import { UserEditPage } from "./pages/users/edit.tsx";
+import { CompanyDetailPage } from "./pages/companies/detail.tsx";
+import { CompanyEditPage } from "./pages/companies/edit.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +19,14 @@ const router = createBrowserRouter([
       {
         path: "users/me/edit",
         element: <UserEditPage />,
+      },
+      {
+        path: "company",
+        element: <CompanyDetailPage />,
+      },
+      {
+        path: "company/edit",
+        element: <CompanyEditPage />,
       },
     ],
   },
