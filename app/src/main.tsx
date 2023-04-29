@@ -6,6 +6,7 @@ import { UserDetailPage } from "./pages/users/detail.tsx";
 import { UserEditPage } from "./pages/users/edit.tsx";
 import { CompanyDetailPage } from "./pages/companies/detail.tsx";
 import { CompanyEditPage } from "./pages/companies/edit.tsx";
+import { LoginPage } from "./pages/login/login.tsx";
 
 const router = createBrowserRouter([
   {
@@ -13,11 +14,11 @@ const router = createBrowserRouter([
     element: <DashboardPage />,
     children: [
       {
-        path: "users/me",
+        path: "me",
         element: <UserDetailPage />,
       },
       {
-        path: "users/me/edit",
+        path: "me/edit",
         element: <UserEditPage />,
       },
       {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
         element: <CompanyEditPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
 ]);
 

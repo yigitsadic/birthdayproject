@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { LoggedInUser } from "../logged_in_user";
 import { refreshToken } from "../client/requests/sessions/refresh";
 import { fetchInitialUserData } from "../client/requests/fetch_initial_user_data";
@@ -30,6 +30,26 @@ export const DashboardPage = () => {
     return (
       <div>
         Hello {currentUser.first_name} {currentUser.last_name}, <br />
+        <table className="table">
+          <tr>
+            <td>
+              <Link to={"/"}>Dashboard</Link>
+            </td>
+            <td>
+              <Link to={"/me"}>Me</Link>
+            </td>
+            <td>
+              <Link to={"/me/edit"}>Edit Me</Link>
+            </td>
+            <td>
+              <Link to={"/company"}>Company Detail</Link>
+            </td>
+            <td>
+              <Link to={"/company/edit"}>Company Edit</Link>
+            </td>
+          </tr>
+        </table>
+        <hr />
         <Outlet />
       </div>
     );
