@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { LoggedInUser } from "./logged_in_user";
-import { refreshToken } from "./client/requests/sessions/refresh";
-import { fetchInitialUserData } from "./client/requests/fetch_initial_user_data";
+import { Outlet } from "react-router-dom";
+import { LoggedInUser } from "../logged_in_user";
+import { refreshToken } from "../client/requests/sessions/refresh";
+import { fetchInitialUserData } from "../client/requests/fetch_initial_user_data";
 
 async function fetchUserFromCookie(
   setCurrentUser: React.Dispatch<React.SetStateAction<LoggedInUser | null>>
@@ -18,8 +19,7 @@ async function fetchUserFromCookie(
     setCurrentUser(userObj);
   }
 }
-
-function App() {
+export const DashboardPage = () => {
   const [currentUser, setCurrentUser] = useState<LoggedInUser | null>(null);
 
   useEffect(() => {
@@ -28,15 +28,17 @@ function App() {
 
   if (currentUser) {
     return (
-      <>
-        User is logged in
-        <br />
-        Welcome, {currentUser.first_name}
-      </>
+      <div>
+        Hello {currentUser.first_name} {currentUser.last_name}, <br />
+        <Outlet />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        Hello unknown user!, <br />
+        <Outlet />
+      </div>
     );
   }
-
-  return <>No user found on session.</>;
-}
-
-export default App;
+};
