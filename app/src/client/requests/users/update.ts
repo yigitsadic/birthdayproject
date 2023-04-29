@@ -31,19 +31,26 @@ export async function updateUser(
       method: "PUT",
     });
 
-    const body = await resp.json();
+    const data = await resp.json();
 
     if (resp.status === 200) {
       return {
         kind: "SUCCESS",
-        data: body as User,
+        data: data as User,
+      };
+    }
+
+    if (resp.status === 422) {
+      return {
+        kind: "FAILURE",
+        data: data as ErrorMessage,
       };
     }
 
     if (resp.status === 401) {
       return {
         kind: "UNAUTHENTICATED",
-        data: body as ErrorMessage,
+        data: data as ErrorMessage,
       };
     }
 
