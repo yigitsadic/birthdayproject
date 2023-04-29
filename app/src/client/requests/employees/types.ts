@@ -1,4 +1,4 @@
-import { Employee } from "../../response_types/Employee";
+import { Employee } from "../../response_types/employee";
 import { ErrorMessage } from "../../response_types/error_message";
 import { AuthenticationParams } from "../authentication_params";
 

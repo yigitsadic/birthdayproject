@@ -1,6 +1,6 @@
 import { UnknownError } from "../../defaults/unknown_error";
 import { EmployeeDto } from "../../dtos/employee_dto";
-import { Employee } from "../../response_types/Employee";
+import { Employee } from "../../response_types/employee";
 import { ErrorMessage } from "../../response_types/error_message";
 import { SharedEmployeeDetailParams, SingularEmployeeResponse } from "./types";
 

@@ -1,5 +1,5 @@
 import { UnknownError } from "../../defaults/unknown_error";
-import { SessionDto } from "../../input_types/session_dto";
+import { SessionDto } from "../../dtos/session_dto";
 import { AuthenticationResponse } from "../../response_types/authentication_response";
 import { ErrorMessage } from "../../response_types/error_message";
 

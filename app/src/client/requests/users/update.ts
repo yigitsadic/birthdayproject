@@ -1,5 +1,5 @@
 import { UnknownError } from "../../defaults/unknown_error";
-import { UserDto } from "../../input_types/user_dto";
+import { UserDto } from "../../dtos/user_dto";
 import { ErrorMessage } from "../../response_types/error_message";
 import { User } from "../../response_types/user";
 import { UserParams } from "./user_params";

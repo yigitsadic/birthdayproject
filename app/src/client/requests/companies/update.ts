@@ -1,5 +1,5 @@
 import { UnknownError } from "../../defaults/unknown_error";
-import { CompanyDto } from "../../input_types/company_dto";
+import { CompanyDto } from "../../dtos/company_dto";
 import { Company } from "../../response_types/company";
 import { ErrorMessage } from "../../response_types/error_message";
 import { CompanyParams } from "./company_params";
