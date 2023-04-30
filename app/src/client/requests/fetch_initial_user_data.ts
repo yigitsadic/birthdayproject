@@ -11,7 +11,7 @@ export interface fetchInitialUserDataParams {
 // fetchInitialUserData fetches user information with company information after login.
 export async function fetchInitialUserData(
   params: fetchInitialUserDataParams
-): Promise<LoggedInUser | null> {
+): Promise<LoggedInUser> {
   try {
     const { user_id, company_id, accessToken } = params;
 
@@ -25,17 +25,19 @@ export async function fetchInitialUserData(
       company_id,
     });
 
-    const userObj: Partial<LoggedInUser> = {};
+    const userObj: Partial<LoggedInUser> = { access_token: accessToken };
     await Promise.all([userDataPromise, companyDataPromise])
       .then((results) => {
         results.forEach((result) => {
           if (result.kind === "SUCCESS") {
             if (result.type === "CompanyDetailResponse") {
+              userObj.logged_in = true;
               userObj.company_id = result.data.id;
               userObj.company_name = result.data.name;
             }
 
             if (result.type === "UserResponse") {
+              userObj.logged_in = true;
               userObj.user_id = result.data.id;
               userObj.first_name = result.data.first_name;
               userObj.last_name = result.data.last_name;
@@ -45,11 +47,11 @@ export async function fetchInitialUserData(
         });
       })
       .catch(() => {
-        return null;
+        return { logged_in: false };
       });
 
     return userObj as LoggedInUser;
   } catch (error) {
-    return null;
+    return { logged_in: false };
   }
 }
