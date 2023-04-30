@@ -18,6 +18,7 @@ export async function employeeUpdate(
       }/employees/${params.employee_id}`,
       {
         method: "PUT",
+        body: JSON.stringify(params.dto),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${params.accessToken}`,
@@ -42,6 +43,13 @@ export async function employeeUpdate(
     }
 
     if (resp.status === 404) {
+      return {
+        kind: "FAILURE",
+        data: data as ErrorMessage,
+      };
+    }
+
+    if (resp.status === 422) {
       return {
         kind: "FAILURE",
         data: data as ErrorMessage,

@@ -5,6 +5,7 @@ import { DashboardPage } from "./pages/dashboard.tsx";
 import { UserDetailPage } from "./pages/users/detail.tsx";
 import { CompanyDetailPage } from "./pages/companies/detail.tsx";
 import { LoginPage } from "./pages/login/login.tsx";
+import { EmployeesListPage } from "./pages/employees/list.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "company",
         element: <CompanyDetailPage />,
+      },
+      {
+        path: "employees",
+        element: <EmployeesListPage />,
       },
     ],
   },

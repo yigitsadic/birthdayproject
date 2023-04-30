@@ -18,6 +18,7 @@ export async function createEmployee(
       }/employees`,
       {
         method: "POST",
+        body: JSON.stringify(params.dto),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${params.accessToken}`,
@@ -27,7 +28,7 @@ export async function createEmployee(
 
     const data = await resp.json();
 
-    if (resp.status === 200) {
+    if (resp.status === 201) {
       return {
         kind: "SUCCESS",
         data: data as Employee,
@@ -42,6 +43,13 @@ export async function createEmployee(
     }
 
     if (resp.status === 404) {
+      return {
+        kind: "FAILURE",
+        data: data as ErrorMessage,
+      };
+    }
+
+    if (resp.status === 422) {
       return {
         kind: "FAILURE",
         data: data as ErrorMessage,

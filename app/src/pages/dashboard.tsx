@@ -49,11 +49,17 @@ export const DashboardPage = () => {
               <td>
                 <Link to={"/"}>Dashboard</Link>
               </td>
+
               <td>
                 <Link to={"/me"}>Me</Link>
               </td>
+
               <td>
                 <Link to={"/company"}>Company</Link>
+              </td>
+
+              <td>
+                <Link to={"/employees"}>Employees</Link>
               </td>
             </tr>
           </tbody>
