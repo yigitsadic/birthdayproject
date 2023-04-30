@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+development:
+  !!merge <<: *default
+  url: postgres://birthdayproject:birthdayproject@localhost:5435/birthdayproject?sslmode=disable
+test:
+  !!merge <<: *default
+  database: admin_test
+production:
+  !!merge <<: *default
+  database: admin_production
+  username: admin
+  password: <%= ENV["ADMIN_DATABASE_PASSWORD"] %>
