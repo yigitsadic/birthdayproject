@@ -4,6 +4,8 @@ import { getUserDetail } from "../../client/requests/users/detail";
 import { AuthenticationRequired } from "../general/authentication_required";
 import { useContext, useEffect, useState } from "react";
 import { User } from "../../client/response_types/user";
+import { UserDisplay } from "./display";
+import { UserForm } from "./form";
 
 export const UserDetailPage = () => {
   const { authStore } = useContext(AuthContext);
@@ -13,6 +15,7 @@ export const UserDetailPage = () => {
   }
 
   const [user, setUser] = useState<User | null>(null);
+  const [mode, setMode] = useState<"display" | "edit">("display");
 
   const fetchFromAPI = async () => {
     const result = await getUserDetail({
@@ -32,27 +35,22 @@ export const UserDetailPage = () => {
   if (user) {
     return (
       <div>
-        Authenticated user information
-        <table>
-          <tbody>
-            <tr>
-              <th>User ID</th>
-              <td>{user.id}</td>
-            </tr>
-            <tr>
-              <th>First Name</th>
-              <td>{user.first_name}</td>
-            </tr>
-            <tr>
-              <th>Last Name</th>
-              <td>{user.last_name}</td>
-            </tr>
-            <tr>
-              <th>Email</th>
-              <td>{user.email}</td>
-            </tr>
-          </tbody>
-        </table>
+        <h3>User Information</h3>
+
+        {mode === "display" ? (
+          <UserDisplay
+            setMode={setMode}
+            user={user}
+            accessToken={authStore.access_token}
+          />
+        ) : (
+          <UserForm
+            setMode={setMode}
+            setUser={setUser}
+            accessToken={authStore.access_token}
+            user={user}
+          />
+        )}
       </div>
     );
   }
