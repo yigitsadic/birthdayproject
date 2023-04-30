@@ -9,7 +9,7 @@ limit 1
 
 	companyUpdateQuery = `
 update companies
-set name = $1
+set name = $1, updated_at = now()
 where companies.id = $2
 returning id, name
 `

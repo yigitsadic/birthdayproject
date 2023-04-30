@@ -1,7 +1,9 @@
 package server
 
 import (
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -75,6 +77,12 @@ func (s *Server) EmployeeDetailHandler(w http.ResponseWriter, r *http.Request) {
 	employeeId := paramConverter("id", w, r)
 
 	result, err := s.EmployeeRepository.FindOne(r.Context(), companyId, employeeId)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		responses.RenderNotFound(w)
+		return
+	}
+
 	if err != nil {
 		responses.RenderInternalServerError(w)
 		return
