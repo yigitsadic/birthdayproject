@@ -29,11 +29,11 @@ async function fetchUserFromCookie(
   }
 }
 export const DashboardPage = () => {
+  const [authStore, setAuthStore] = useState<AuthStore | null>(null);
+
   const [currentUser, setCurrentUser] = useState<LoggedInUser>({
     logged_in: false,
   });
-
-  const [authStore, setAuthStore] = useState<AuthStore | null>(null);
 
   useEffect(() => {
     fetchUserFromCookie(setCurrentUser, setAuthStore);
