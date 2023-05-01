@@ -26,6 +26,21 @@ func main() {
 		connectionString = "postgres://birthdayproject:birthdayproject@localhost:5435/birthdayproject?sslmode=disable"
 	}
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "7755"
+	}
+
+	webAppUrl := os.Getenv("WEB_APP_URL")
+	if webAppUrl == "" {
+		webAppUrl = "http://localhost:5173"
+	}
+
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		jwtSecret = "top secret"
+	}
+
 	logger, err := zap.NewProduction()
 	if err != nil {
 		panic(err)
@@ -51,11 +66,6 @@ func main() {
 	dbClient.SetMaxIdleConns(25)
 	dbClient.SetConnMaxLifetime(5 * time.Minute)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "7755"
-	}
-
 	sessionsStore := pg_sessions.NewPgSessionsStore(dbClient)
 	usersStore := pg_users.NewPgUserStore(dbClient)
 	employeesStore := pg_employees.NewPgEmployeeStore(dbClient)
@@ -65,7 +75,7 @@ func main() {
 	middleware.DefaultLogger = common.DefaultLogger(logger)
 
 	// FIX: This value should be taken from env variable.
-	jwtStore := auth.NewJWT("top secret")
+	jwtStore := auth.NewJWT(jwtSecret)
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -76,7 +86,7 @@ func main() {
 	r.Use(middleware.SetHeader("Content-Type", "application/json"))
 
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowedOrigins:   []string{webAppUrl},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},

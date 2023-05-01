@@ -8,6 +8,9 @@ RUN npm i
 
 COPY . .
 
+ARG API_URL
+RUN echo "VITE_API_URL=${API_URL}" > .env
+
 RUN npm run build
 
 FROM nginx:stable

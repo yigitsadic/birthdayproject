@@ -1,5 +1,47 @@
 version: "3.8"
 services:
+  reverse-proxy:
+    image: traefik:v2.10
+    command: --api.insecure=true --providers.docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "80:80"
+      - "8080:8080"
+  api:
+    build:
+      context: api
+      dockerfile: build/Dockerfile
+    environment:
+      - "POSTGRES_DSL=postgres://$DBNAME:$DBPASS@database:5432/$DBNAME?sslmode=disable"
+      - "PORT=9988"
+      - "WEB_APP_URL=http://app.cakeday.localhost"
+    ports:
+      - "3595:9988"
+    depends_on:
+      - database
+    labels:
+      - "traefik.http.routers.api.rule=Host(`api.cakeday.localhost`)"
+  web-app:
+    build:
+      context: app
+      dockerfile: build/Dockerfile
+      args:
+        - API_URL=http://api.cakeday.localhost
+    ports:
+      - "3570:80"
+    labels:
+      - "traefik.http.routers.app.rule=Host(`app.cakeday.localhost`)"
+  static-site:
+    build:
+      context: static-site
+      dockerfile: build/Dockerfile
+    environment:
+      - "WEBAPP_URL=app.cakeday.localhost"
+    ports:
+      - "3555:3000"
+    labels:
+      - "traefik.http.routers.static_site.rule=Host(`cakeday.localhost`)"
   database:
     image: postgres:15.2-alpine
     restart: always
@@ -15,10 +57,6 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-    networks:
-      - backend
 volumes:
   db_volume:
     driver: local
-networks:
-  backend:
