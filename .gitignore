@@ -40,8 +40,8 @@ next-env.d.ts
 .bundle
 
 # Ignore all logfiles and tempfiles.
-log/*
-tmp/*
+/admin/log/*
+/admin/tmp/*
 !/log/.keep
 !/tmp/.keep
 
@@ -58,7 +58,7 @@ tmp/*
 !/tmp/storage/.keep
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+/admin/config/master.key
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
