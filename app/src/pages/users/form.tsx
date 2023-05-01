@@ -45,6 +45,8 @@ export const UserForm = (props: UserFormProps) => {
 
   return (
     <div>
+      {message && <p>{message}</p>}
+
       <form onSubmit={handleSubmit}>
         <div>
           <label>First Name</label>
