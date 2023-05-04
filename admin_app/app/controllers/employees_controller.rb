@@ -41,10 +41,6 @@ class EmployeesController < ApplicationController
   end
 
   private
-  
-  def set_companies
-    @companies = Company.all.order(name: :asc)
-  end
 
   def set_employee
     @employee = Employee.find(params[:id])

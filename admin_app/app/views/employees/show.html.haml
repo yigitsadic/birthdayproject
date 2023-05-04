@@ -27,7 +27,7 @@
   .row
     .col-3
       %b Company:
-    .col-9= @employee.company.name
+    .col-9= link_to(@employee.company.name, @employee.company)
 
   .row
     .col-3

@@ -1,0 +1,40 @@
+.container
+  .row
+    .col-3
+      %b First Name:
+      
+    .col-9= @user.first_name
+
+  .row
+    .col-3
+      %b Last Name:
+      
+    .col-9= @user.last_name
+    
+  .row
+    .col-3
+      %b Email:
+      
+    .col-9= @user.email
+    
+  .row
+    .col-3
+      %b Company:
+      
+    .col-9= link_to(@user.company.name, @user.company)
+
+  .row
+    .col-3
+      %b Created at:
+    .col-9= @user.created_at
+
+  .row
+    .col-3
+      %b Updated at:
+    .col-9= @user.updated_at
+
+  .row
+    .col-3
+      %div.btn-group{ role: 'group', 'aria-label': 'actions button group' }
+        = link_to 'Back', users_path, class: 'btn btn-primary'
+        = link_to 'Edit', edit_user_path(@user), class: 'btn btn-warning'

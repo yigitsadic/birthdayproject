@@ -1,0 +1,27 @@
+%h1.text-center Listing Users
+
+%table.table
+  %thead
+    %tr
+      %th First name
+      %th Last name
+      %th Email
+      %th Company
+      %th Actions
+
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.first_name
+        %td= user.last_name
+        %td= user.email
+        %td= link_to(user.company.name, user.company)
+        %td
+          %div.btn-group{ role: 'group', 'aria-label': 'actions button group' }
+            = link_to 'Show', user, class: 'btn btn-primary'
+            = link_to 'Edit', edit_user_path(user), class: 'btn btn-warning'
+            = link_to 'Destroy', user, method: :delete, data: { turbo_confirm: 'Are you sure?', turbo_method: :delete }, class: 'btn btn-danger'
+
+%br
+
+= link_to 'New User', new_user_path, class: 'btn btn-success'

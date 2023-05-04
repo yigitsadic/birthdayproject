@@ -1,0 +1,32 @@
+= form_for @user do |f|
+  - if @user.errors.any?
+    %div.alert.alert-danger{ role: :alert }
+      %h2= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+      %ul
+        - @user.errors.full_messages.each do |message|
+          %li= message
+
+  .mb-3
+    = f.label :first_name, class: 'form-label'
+    = f.text_field :first_name, class: 'form-control'
+    
+  .mb-3
+    = f.label :last_name, class: 'form-label'
+    = f.text_field :last_name, class: 'form-control'
+    
+  .mb-3
+    = f.label :email, class: 'form-label'
+    = f.text_field :email, class: 'form-control'
+    
+  .mb-3
+    = f.label :password, class: 'form-label'
+    = f.password_field :password, class: 'form-control'
+    
+  .mb-3
+    = f.label :company_id, class: 'form-label'
+    = f.select :company_id, @companies.map { |c| [c.name, c.id]}, {}, { class: 'form-control' }
+    
+  .actions
+    = f.submit 'Save', class: 'btn btn-success'
+
+%hr
