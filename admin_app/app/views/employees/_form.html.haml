@@ -1,0 +1,36 @@
+= form_for @employee do |f|
+  - if @employee.errors.any?
+    %div.alert.alert-danger{ role: :alert }
+      %h2= "#{pluralize(@employee.errors.count, "error")} prohibited this employee from being saved:"
+      %ul
+        - @employee.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :first_name, class: 'form-label'
+    = f.text_field :first_name, class: 'form-control'
+    
+  .field
+    = f.label :last_name, class: 'form-label'
+    = f.text_field :last_name, class: 'form-control'
+    
+  .field
+    = f.label :email, class: 'form-label'
+    = f.text_field :email, class: 'form-control'
+    
+  .field
+    = f.label :birth_day, class: 'form-label'
+    = f.number_field :birth_day, class: 'form-control'
+    
+  .field
+    = f.label :birth_month, class: 'form-label'
+    = f.number_field :birth_month, class: 'form-control'
+    
+  .field
+    = f.label :company_id, class: 'form-label'
+    = f.select :company_id, @companies.map { |c| [c.name, c.id]}, {}, { class: 'form-control' }
+    
+  .actions
+    = f.submit 'Save', class: 'btn btn-success'
+
+%hr

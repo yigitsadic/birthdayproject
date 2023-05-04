@@ -1,0 +1,14 @@
+%header
+  %nav.navbar.navbar-expand-lg
+    .container-fluid
+      %span.navbar-brand CakedayToday
+      
+      %button.navbar-toggler{type: "button", 'data-bs-toggle': 'collapse', 'data-bs-target': '#navcollapse', 'aria-label': 'Toggle navigation'}
+        %span.navbar-toggler-icon= " "
+
+      #navcollapse.collapse.navbar-collapse
+        %ul.navbar-nav
+          %li.nav-item= link_to('Home', root_path, class: 'nav-link')
+          %li.nav-item= link_to('Employees', employees_path, class: 'nav-link')
+
+
