@@ -39,9 +39,11 @@ next-env.d.ts
 
 .bundle
 
+dist
+
 # Ignore all logfiles and tempfiles.
-/admin/log/*
-/admin/tmp/*
+/admin_app/log/*
+/admin_app/tmp/*
 !/log/.keep
 !/tmp/.keep
 
