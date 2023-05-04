@@ -1,0 +1,21 @@
+%h1.text-center Listing Companies
+
+%table.table
+  %thead
+    %tr
+      %th Name
+      %th Actions
+
+  %tbody
+    - @companies.each do |company|
+      %tr
+        %td= company.name
+        %td
+          %div.btn-group{ role: 'group', 'aria-label': 'actions button group' }
+            = link_to 'Show', company, class: 'btn btn-primary'
+            = link_to 'Edit', edit_company_path(company), class: 'btn btn-warning'
+            = link_to 'Destroy', company, method: :delete, data: { turbo_confirm: 'Are you sure?', turbo_method: :delete }, class: 'btn btn-danger'
+
+%br
+
+= link_to 'New Company', new_company_path, class: 'btn btn-success'

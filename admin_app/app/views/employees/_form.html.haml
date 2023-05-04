@@ -6,27 +6,27 @@
         - @employee.errors.full_messages.each do |message|
           %li= message
 
-  .field
+  .mb-3
     = f.label :first_name, class: 'form-label'
     = f.text_field :first_name, class: 'form-control'
     
-  .field
+  .mb-3
     = f.label :last_name, class: 'form-label'
     = f.text_field :last_name, class: 'form-control'
     
-  .field
+  .mb-3
     = f.label :email, class: 'form-label'
     = f.text_field :email, class: 'form-control'
     
-  .field
+  .mb-3
     = f.label :birth_day, class: 'form-label'
     = f.number_field :birth_day, class: 'form-control'
     
-  .field
+  .mb-3
     = f.label :birth_month, class: 'form-label'
     = f.number_field :birth_month, class: 'form-control'
     
-  .field
+  .mb-3
     = f.label :company_id, class: 'form-label'
     = f.select :company_id, @companies.map { |c| [c.name, c.id]}, {}, { class: 'form-control' }
     

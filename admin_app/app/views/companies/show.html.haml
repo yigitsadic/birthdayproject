@@ -1,0 +1,12 @@
+
+.container
+  .row
+    .col-3
+      %b Name:
+    .col-9= @company.name
+
+  .row
+    .col-3
+      %div.btn-group{ role: 'group', 'aria-label': 'actions button group' }
+        = link_to 'Back', companies_path, class: 'btn btn-primary'
+        = link_to 'Edit', edit_company_path(@company), class: 'btn btn-warning'
