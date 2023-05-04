@@ -1,4 +1,4 @@
-FROM node:19.7-alpine3.17
+FROM node:19.7-alpine3.17 as builder
 
 WORKDIR /app
 COPY package.json package.json
@@ -10,5 +10,7 @@ COPY . .
 
 RUN npm run build
 
-CMD npm run start
+FROM nginx:stable
+
+COPY --from=builder /app/dist /usr/share/nginx/html
 
