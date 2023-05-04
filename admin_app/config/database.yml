@@ -38,6 +38,4 @@ test:
 #
 production:
   !!merge <<: *default
-  database: admin_app_production
-  username: admin_app
-  password: <%= ENV["ADMIN_APP_DATABASE_PASSWORD"] %>
+  url: <%= ENV["POSTGRES_DSL"] %>
