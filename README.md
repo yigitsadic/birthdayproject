@@ -23,6 +23,7 @@ classDiagram
 API --> Postgres Database
 Web App --> API
 Admin App --> Postgres Database
+Admin App --> Mongo Database
 Email Sender --> Postgres Database
 API --> RabbitMQ
 Admin App --> RabbitMQ
