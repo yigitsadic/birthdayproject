@@ -12,5 +12,6 @@ RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate
 
 RUN cd .. && touch .env && cd src
 
-CMD make migrate
+ENTRYPOINT "make"
+CMD ["migrate"]
 
