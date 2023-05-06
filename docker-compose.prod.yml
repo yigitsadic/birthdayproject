@@ -1,0 +1,98 @@
+services:
+  reverse-proxy:
+    image: traefik:v2.10
+    command:
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=${ADMIN_EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "./letsencrypt:/letsencrypt"
+    ports:
+      - "80:80"
+      - "443:443"
+  static-site:
+    image: yigitsadic/static-site:v5
+    ports:
+      - "8070:80"
+    labels:
+      - "traefik.http.routers.static_site.rule=Host(`cakeday.today`)"
+      - "traefik.http.routers.static_site.entrypoints=websecure"
+      - "traefik.http.routers.static_site.tls.certresolver=myresolver"
+  admin-app:
+    image: yigitsadic/birthday_admin_app
+    environment:
+      - "RAILS_ENV=production"
+      - "ADMIN_USER_NAME=${ADMIN_USER_NAME}"
+      - "ADMIN_PASSWORD=${ADMIN_PASSWORD}"
+      - "POSTGRES_DSL=${POSTGRES_DSL}"
+    ports:
+      - "4422:3000"
+    depends_on:
+      database:
+        condition: service_healthy
+    labels:
+      - "traefik.http.routers.admin_app.rule=Host(`admin.cakeday.today`)"
+  web-app:
+    image: yigitsadic/birthday_web_app
+    build:
+      context: app
+      dockerfile: build/Dockerfile
+      args:
+        - API_URL=https://api.cakeday.today
+    ports:
+      - "3570:80"
+    labels:
+      - "traefik.http.routers.app.rule=Host(`app.cakeday.today`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=myresolver"
+  api:
+    image: yigitsadic/birthday_api
+    environment:
+      - "POSTGRES_DSL=${POSTGRES_DSL}"
+      - "PORT=9988"
+      - "WEB_APP_URL=https://app.cakeday.today"
+    ports:
+      - "3595:9988"
+    depends_on:
+      database:
+        condition: service_healthy
+    labels:
+      - "traefik.http.routers.api.rule=Host(`api.cakeday.today`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=myresolver"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9988/heartbeat"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  database:
+    image: postgres:15.2-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-h", "localhost", "-p", "5432"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  db-migrate:
+    image: yigitsadic/birthday_db_migrations
+    environment:
+      - "POSTGRES_DSL=${POSTGRES_DSL}"
+    depends_on:
+      database:
+        condition: service_healthy
+    command: migrate
+    profiles: ["db-operations"]
+volumes:
+  db_volume:
+    driver: local
