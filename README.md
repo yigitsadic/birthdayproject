@@ -12,3 +12,20 @@ Birhday project is a project for companies to send birthday emails to their empl
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+
+```mermaid
+---
+title: CakedayToday Stack
+---
+
+classDiagram
+
+API --> Postgres Database
+Web App --> API
+Admin App --> Postgres Database
+Email Sender --> Postgres Database
+API --> RabbitMQ
+Admin App --> RabbitMQ
+RabbitMQ --> Audit Logger
+Audit Logger --> Mongo Database
+```
