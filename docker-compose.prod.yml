@@ -18,7 +18,12 @@ services:
       - "80:80"
       - "443:443"
   static-site:
-    image: yigitsadic/static-site:v5
+    image: yigitsadic/birthday_static_site
+    build:
+      context: static-site
+      dockerfile: build/Dockerfile
+      args:
+        - WEB_APP_URL=https://app.cakeday.today
     ports:
       - "8070:80"
     labels:
