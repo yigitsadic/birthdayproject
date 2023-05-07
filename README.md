@@ -29,4 +29,32 @@ API --> RabbitMQ
 Admin App --> RabbitMQ
 RabbitMQ --> Audit Logger
 Audit Logger --> Mongo Database
+Static Site --> API
+
+API : Golang
+Web App : React + TypeScript
+Email Sender : Golang
+Audit Logger : Golang
+Admin App : Ruby on Rails
+Static Site : Nextjs
+
 ```
+
+## Flows
+
+```mermaid
+---
+title : Audit Logging Flow
+---
+
+sequenceDiagram
+    API ->> RabbitMQ : Publishes row changes via messages
+    Admin App ->> RabbitMQ : Publishes row changes via messages
+
+    Audit Logger ->> RabbitMQ : Fetches row changes via messages
+    Audit Logger ->> RabbitMQ : Fetches row changes via messages
+    Audit Logger ->> Mongo DB : Writes changes to
+
+    Admin App ->> AuditLogger : Fetches row changes via HTTP
+```
+
